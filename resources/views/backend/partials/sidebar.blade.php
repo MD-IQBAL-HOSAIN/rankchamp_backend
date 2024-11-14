@@ -178,7 +178,7 @@
         <li class="menu-header small text-uppercase"><span class="menu-header-text">Settings</span></li>
         <!-- Layouts -->
         <li
-            class="menu-item {{ Request::routeIs('admin.system.setting') || Request::routeIs('system.mail.index') || Request::routeIs('social.media') || Request::routeIs('stripe.index') || Request::routeIs('privacy.edit') || Request::routeIs('terms.edit') ? 'active open' : '' }}">
+            class="menu-item {{ Request::routeIs('admin.system.setting') || Request::routeIs('system.mail.index') || Request::routeIs('social.media') || Request::routeIs('stripe.index') || Request::routeIs('privacy.edit') || Request::routeIs('terms.edit') || Request::routeIs('profilesetting') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-cog"></i>
                 <div data-i18n="Layouts">Settings</div>
@@ -188,6 +188,13 @@
                 <li class="menu-item {{ Request::routeIs('admin.system.setting') ? 'active' : '' }}"><a
                         class="menu-link" href="{{ route('admin.system.setting') }}">System Settings</a>
                 </li>
+                {{-- prifile setting start --}}
+                <li class="menu-item {{ Request::routeIs('profilesetting') ? 'active' : '' }}">
+                    <a class="menu-link" href="{{ route('profilesetting') }}">
+                        <div data-i18n="Support">Profile Setting</div>
+                    </a>
+                </li>
+                {{-- prifile setting end --}}
 
                 <li class="menu-item {{ Request::routeIs('social.media') ? 'active' : '' }}">
                     <a class="menu-link" href="{{ route('social.media') }}">Social Media</a>
@@ -214,17 +221,5 @@
             </ul>
             {{-- <li class="menu-item"><a class="menu-link" href="">Paypal</a></li> --}}
         </li>
-
-        {{-- ..................................................... --}}
-
-        {{-- prifile seatting start --}}
-        <li class="menu-item {{ Request::routeIs('profilesetting') }}">
-            <a class="menu-link" href="{{ route('profilesetting') }}">
-                <i class="menu-icon tf-icons bx bxs-user-account"></i>
-                <div data-i18n="Support">Profile Setting</div>
-            </a>
-        </li>
-        {{-- prifile seatting end --}}
-
     </ul>
 </aside>
