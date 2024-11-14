@@ -31,6 +31,8 @@ Route::middleware('auth:api')->group(function () {
     Route::controller(AuthController::class)->group(function () {
         Route::post('logout', 'logout');
         Route::post('refresh', 'refresh');
+        Route::delete('/delete-account', 'deleteAccount');
+        Route::post('/profile/update/user', 'ProfileUpdate');
     });
 
    

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -64,7 +65,6 @@ class AuthController extends Controller
                     'type' => 'bearer',
                 ]
             ]);
-
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json([
                 'status' => 'error',
@@ -92,9 +92,11 @@ class AuthController extends Controller
         ]);
     }
 
+
+    //for new token create
     public function refresh()
     {
-        $newToken = JWTAuth::refresh(JWTAuth::getToken()); 
+        $newToken = JWTAuth::refresh(JWTAuth::getToken());
         return response()->json([
             'status' => 'success',
             'user' => JWTAuth::user(),
@@ -105,13 +107,82 @@ class AuthController extends Controller
         ]);
     }
 
-public function index()
-{
-    $users = User::all();
-    return response()->json([
-        'status' => 'success',
-        'message' => 'User list retrieved successfully',
-        'users' => $users,
-    ]);
-}
+    //show all user
+    public function index()
+    {
+        $users = User::all();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'User list retrieved successfully',
+            'users' => $users,
+        ]);
+    }
+
+    //Account Delete functions
+    public function deleteAccount(Request $request)
+    {
+        $user = $request->user();
+
+        // Revoke all tokens before deleting the account
+        $user->tokens()->delete();
+
+        // Delete the user account
+        $user->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'user_name' => $user->name,
+            'message' => 'Account deleted successfully'
+        ]);
+    }
+
+    public function ProfileUpdate(Request $request)
+    {
+        try {
+            // Get the currently authenticated user
+            $authenticatedUser = Auth::user();
+
+            // Update the user's profile information
+            $authenticatedUser->name = $request->name;
+            $authenticatedUser->email = $request->email;
+
+            // Update password if provided
+            if ($request->has('password')) {
+                $authenticatedUser->password = Hash::make($request->password);
+            }
+
+            // Handle image upload if there's a new image
+            if ($request->hasFile('image')) {
+
+                $image = $request->file('image');
+                $imageName = time() . '_' . $image->getClientOriginalName();
+                $imagePath = public_path('/profile/image/');
+
+                // Move the image to the public storage folder
+                $image->move($imagePath, $imageName);
+                $authenticatedUser->image = '/profile/image/' . $imageName;
+            }
+
+
+            // Update role if provided
+            if ($request->has('role')) {
+                $authenticatedUser->role = $request->role;
+            }
+
+            // Save the updated user data
+            $authenticatedUser->save();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Profile updated successfully',
+                'user' => $authenticatedUser
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Profile update failed',
+                'error' => $th->getMessage()
+            ], 400);
+        }
+    }
 }
