@@ -10,11 +10,12 @@
     <meta name="csrf_token" content="{{ csrf_token() }}" />
     <title>@yield('title')</title>
     <meta name="description" content="" />
+
     <!-- Favicon start-->
-   {{--  @php
+    @php
         $setting = \App\Models\SystemSetting::first();
     @endphp
-    <link rel="shortcut icon" href="{{ !empty($setting->favicon) ? asset('storage/' . $setting->favicon) : asset('frontend/images/favicon.png') }}" type="image/x-icon"> --}}
+    <link rel="shortcut icon" href="{{ !empty($setting->favicon) ? asset('storage/' . $setting->favicon) : asset('frontend/images/favicon.png') }}" type="image/x-icon">
     <!-- Favicon end-->
 
     @include('backend.partials.style')

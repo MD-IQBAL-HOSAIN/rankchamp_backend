@@ -1,11 +1,14 @@
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
-    {{-- @php
+    @php
         $system = \App\Models\SystemSetting::first();
         $logo = $system ? $system->logo : null;
-    @endphp --}}
+        $privacy = App\Models\PrivacyPolicy::first();
+        $terms = App\Models\PrivacyPolicy::offset(1)->first();
+    @endphp
+
     <div class="app-brand demo">
         <a href="" class="app-brand-link">
-            {{-- <img src="{{ asset($logo) }}" alt="" class="img-fluid"> --}}
+            <img src="{{ asset($logo) }}" alt="" class="img-fluid">
         </a>
 
         <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
@@ -174,31 +177,41 @@
         <!-- Settings -->
         <li class="menu-header small text-uppercase"><span class="menu-header-text">Settings</span></li>
         <!-- Layouts -->
-        <li class="menu-item">
+        <li
+            class="menu-item {{ Request::routeIs('admin.system.setting') || Request::routeIs('system.mail.index') || Request::routeIs('social.media') || Request::routeIs('stripe.index') || Request::routeIs('privacy.edit') || Request::routeIs('terms.edit') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-cog"></i>
                 <div data-i18n="Layouts">Settings</div>
             </a>
 
-           {{--  <ul class="menu-sub">
+            <ul class="menu-sub">
                 <li class="menu-item {{ Request::routeIs('admin.system.setting') ? 'active' : '' }}"><a
                         class="menu-link" href="{{ route('admin.system.setting') }}">System Settings</a>
-                </li>
-
-                <li class="menu-item {{ Request::routeIs('system.mail.index') ? 'active' : '' }}">
-                    <a class="menu-link" href="{{ route('system.mail.index') }}">Mail Setting</a>
                 </li>
 
                 <li class="menu-item {{ Request::routeIs('social.media') ? 'active' : '' }}">
                     <a class="menu-link" href="{{ route('social.media') }}">Social Media</a>
                 </li>
 
+                <li class="menu-item {{ Request::routeIs('system.mail.index') ? 'active' : '' }}">
+                    <a class="menu-link" href="{{ route('system.mail.index') }}">Mail Setting</a>
+                </li>
 
                 <li class="menu-item {{ Request::routeIs('stripe.index') ? 'active' : '' }}">
                     <a class="menu-link" href="{{ route('stripe.index') }}">Stripe</a>
                 </li>
 
-            </ul> --}}
+                <li class="menu-item {{ Request::routeIs('privacy.edit') ? 'active' : '' }}">
+                    <a class="menu-link" href="{{ route('privacy.edit', ['slug' => $privacy->slug]) }}">Privacy &
+                        Policy </a>
+                </li>
+
+                <li class="menu-item {{ Request::routeIs('terms.edit') ? 'active' : '' }}">
+                    <a class="menu-link" href="{{ route('terms.edit', ['slug' => $terms->slug]) }}">Terms &
+                        Conditions</a>
+                </li>
+
+            </ul>
             {{-- <li class="menu-item"><a class="menu-link" href="">Paypal</a></li> --}}
         </li>
 
