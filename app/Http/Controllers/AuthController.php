@@ -44,7 +44,7 @@ class AuthController extends Controller
             $request->validate([
                 'name' => 'required|string|max:255',
                 'email' => 'required|string|email|max:255|unique:users,email',
-                'password' => 'required|string|confirmed|min:6',
+                'password' => 'required|string|confirmed|min:8',
             ]);
 
             $user = User::create([
@@ -83,16 +83,18 @@ class AuthController extends Controller
 
     public function logout()
     {
-        JWTAuth::invalidate(JWTAuth::getToken()); // Explicitly invalidate the token
+        $user = JWTAuth::user();
+        JWTAuth::invalidate(JWTAuth::getToken());
         return response()->json([
             'status' => 'success',
+            'user_name' => $user->name,
             'message' => 'Successfully logged out',
         ]);
     }
 
     public function refresh()
     {
-        $newToken = JWTAuth::refresh(JWTAuth::getToken()); // Refresh token explicitly with JWTAuth
+        $newToken = JWTAuth::refresh(JWTAuth::getToken()); 
         return response()->json([
             'status' => 'success',
             'user' => JWTAuth::user(),

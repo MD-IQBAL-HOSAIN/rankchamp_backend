@@ -33,11 +33,6 @@ Route::middleware('auth:api')->group(function () {
         Route::post('refresh', 'refresh');
     });
 
-   /*  Route::controller(TodoController::class)->group(function () {
-        Route::post('todos/store', 'store');
-        Route::get('todos/show/{id}', 'show');
-        Route::post('todos/update/{id}', 'update');
-        Route::delete('todos/delete/{id}', 'destroy');
-    }); */
+   
 
 });
