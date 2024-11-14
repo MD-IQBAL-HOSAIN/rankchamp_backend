@@ -16,10 +16,10 @@
                                 @csrf
                                 <div class="form-group row mb-3">
                                     <div class="col-12">
-                                        <label class="form-lable">Name:</label>
+                                        <label class="form-label">Name:</label>
                                         <input type="text"
                                             class="form-control form-control-md border-left-0 @error('name') is-invalid @enderror"
-                                            placeholder="Name" name="name" value="{{ Auth::user()->name }}" required>
+                                            placeholder="Name" name="name" value="{{ Auth::user() ? Auth::user()->name : '' }}" required>
                                         @error('name')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -33,7 +33,7 @@
                                         <label class="form-lable">Email:</label>
                                         <input type="email"
                                             class="form-control form-control-md border-left-0 @error('email') is-invalid @enderror"
-                                            placeholder="Email" name="email" value="{{ Auth::user()->email }}" required>
+                                            placeholder="Email" name="email" value="{{ Auth::user()->email ?? '' }}" required>
                                         @error('email')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>

@@ -78,15 +78,44 @@ class SystemSettingController extends Controller
         return view('backend.layout.system_setting.profile_setting');
     }
 
+    // public function profileupdate(Request $request)
+    // {
+    //     $user = User::find(Auth::user()->id);
+    //     $user->name = $request->name;
+    //     $user->email = $request->email;
+    //     $user->save();
+
+    //     return redirect()->back()->with('t-success', 'Profile Update Successfully!');
+    // }
+
+
+    // Update the profile information (name and email)
     public function profileupdate(Request $request)
     {
-        $user = User::find(Auth::user()->id);
-        $user->name = $request->name;
-        $user->email = $request->email;
+        // Check if the user is authenticated
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'Please log in to update your profile.');
+        }
+
+        // Get the authenticated user
+        $user = Auth::user();
+
+        // Validate the input data
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+        ]);
+
+        // Update the user's profile information
+        $user->name = $validated['name'];
+        $user->email = $validated['email'];
         $user->save();
 
-        return redirect()->back()->with('t-success', 'Profile Update Successfully!');
+        // Redirect back with a success message
+        return redirect()->back()->with('t-success', 'Profile updated successfully!');
     }
+
+
 
     public function passwordupdate(Request $request)
     {

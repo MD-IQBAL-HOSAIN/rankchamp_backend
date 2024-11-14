@@ -219,10 +219,10 @@
 
         {{-- prifile seatting start --}}
         <li class="menu-item {{ Request::routeIs('profilesetting') }}">
-            {{-- <a class="menu-link" href="{{ route('profilesetting') }}">
+            <a class="menu-link" href="{{ route('profilesetting') }}">
                 <i class="menu-icon tf-icons bx bxs-user-account"></i>
                 <div data-i18n="Support">Profile Setting</div>
-            </a> --}}
+            </a>
         </li>
         {{-- prifile seatting end --}}
 
